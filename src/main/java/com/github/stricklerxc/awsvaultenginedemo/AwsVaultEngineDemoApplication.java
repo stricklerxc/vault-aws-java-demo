@@ -1,16 +1,13 @@
 package com.github.stricklerxc.awsvaultenginedemo;
 
-import com.github.stricklerxc.awsvaultenginedemo.config.AwsConfigurationProperties;
 import com.github.stricklerxc.awsvaultenginedemo.service.S3Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 @SpringBootApplication
-@EnableConfigurationProperties(AwsConfigurationProperties.class)
 public class AwsVaultEngineDemoApplication implements CommandLineRunner {
     @Autowired
     S3Service s3;

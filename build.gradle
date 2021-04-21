@@ -1,7 +1,7 @@
 plugins {
-	id 'org.springframework.boot' version '2.4.5'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
+    id 'org.springframework.boot' version '2.4.5'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
 }
 
 group = 'com.github.stricklerxc'
@@ -10,24 +10,24 @@ sourceCompatibility = '11'
 targetCompatibility = '11'
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	// Spring Boot
-	implementation 'org.springframework.boot:spring-boot-starter'
-	implementation 'org.springframework.cloud:spring-cloud-starter-vault-config:3.0+'
-	implementation 'org.springframework.cloud:spring-cloud-vault-config-aws:3.0+'
+    // Spring Boot
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.cloud:spring-cloud-starter-vault-config:3.0+'
+    implementation 'org.springframework.cloud:spring-cloud-vault-config-aws:3.0+'
 
-	// AWS
+    // AWS
     implementation platform('com.amazonaws:aws-java-sdk-bom:1.11+')
-	implementation 'com.amazonaws:aws-java-sdk-s3'
-	implementation 'com.amazonaws:aws-java-sdk-sts'
+    implementation 'com.amazonaws:aws-java-sdk-s3'
+    implementation 'com.amazonaws:aws-java-sdk-sts'
 
 
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }

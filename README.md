@@ -4,10 +4,11 @@ Demo application for using Vault's AWS Secrets Engine.
 
 ## Usage
 
-1. Export your Vault Token to the VAULT_TOKEN environment variable
+1. Set the VAULT_ADDR and VAULT_TOKEN environment variable
 
     ```bash
     export VAULT_TOKEN=s.XXXXXXXXX
+    export VAULT_ADDR=https://your-vault.example.com
     ```
 
 2. Start the application

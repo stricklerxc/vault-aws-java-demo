@@ -7,13 +7,24 @@ plugins {
 group = 'com.github.stricklerxc'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
+targetCompatibility = '11'
 
 repositories {
 	mavenCentral()
 }
 
 dependencies {
+	// Spring Boot
 	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.cloud:spring-cloud-starter-vault-config:3.0+'
+	implementation 'org.springframework.cloud:spring-cloud-vault-config-aws:3.0+'
+
+	// AWS
+    implementation platform('com.amazonaws:aws-java-sdk-bom:1.11+')
+	implementation 'com.amazonaws:aws-java-sdk-s3'
+	implementation 'com.amazonaws:aws-java-sdk-sts'
+
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

@@ -1,0 +1,22 @@
+spring:
+  cloud:
+    vault:
+      kv:
+        enabled: true
+        backend: kv
+        default-context: aws-demo
+        application-name: aws-demo
+      aws:
+        enabled: true
+        role: s3
+        backend: aws
+        access-key-property: aws.accessKeyId
+        secret-key-property: aws.secretKey
+      host: 192.168.100.15
+      port: 80
+      scheme: http
+      authentication: TOKEN
+      token: ${VAULT_TOKEN}
+      uri: http://192.168.100.15
+
+spring.config.import: vault://

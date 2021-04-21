@@ -18,14 +18,16 @@ public class AwsVaultEngineDemoApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        boolean success = false;
-        while (!success) {
+        int failures = 0;
+        while (failures < 10) {
             try {
                 s3.printBuckets();
 
-                success = true;
+                break;
             } catch (Exception e) {
                 System.out.println("Failed to print buckets");
+
+                failures++;
             }
         }
     }

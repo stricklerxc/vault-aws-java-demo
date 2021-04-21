@@ -4,14 +4,48 @@ Demo application for using Vault's AWS Secrets Engine.
 
 ## Usage
 
-1. Set the VAULT_ADDR and VAULT_TOKEN environment variable
+1. Enable the AWS Secrets Engine in Vault ([setup](https://www.vaultproject.io/docs/secrets/aws#setup))
+
+    ```bash
+    $ vault secrets enable aws
+    Success! Enabled the aws secrets engine at: aws/
+    ```
+
+2. Setup IAM User for Vault
+
+    These are the IAM credentials that Vault will use to dynamically provision IAM users & roles. See below for the minimum set of IAM permissions this user will need.
+
+    [Minimal IAM Policy](https://www.vaultproject.io/docs/secrets/aws#example-iam-policy-for-vault)
+
+    ```bash
+    $ vault write aws/config/root \
+        access_key=<access-key-id> \
+        secret_key=<secret-key> \
+        region=us-east-1
+    Success! Data written to: aws/config/root
+    ```
+
+3. Create role in AWS Secrets Engine
+
+    Below command creates a role "s3" in Vault with the Amazon provided AmazonS3ReadOnlyAccess policy attached.
+
+    Using this role will cause Vault to provision IAM users in your AWS account with the AmazonS3ReadOnlyAccess policy attached. Users will be deleted at the end of the Vault lease. See the [official docs](https://www.vaultproject.io/docs/secrets/aws#aws-secrets-engine) for more information.
+
+    ```bash
+    $ vault write aws/roles/s3 \
+        credential_type=iam_user \
+        policy_arns=arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess
+    Success! Data written to: aws/roles/s3
+    ```
+
+4. Set the VAULT_ADDR and VAULT_TOKEN environment variables
 
     ```bash
     export VAULT_TOKEN=s.XXXXXXXXX
     export VAULT_ADDR=https://your-vault.example.com
     ```
 
-2. Start the application
+5. Start the demo application
 
     ```bash
     $ ./gradlew clean bootRun

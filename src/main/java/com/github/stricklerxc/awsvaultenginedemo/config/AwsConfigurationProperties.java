@@ -47,7 +47,8 @@ public class AwsConfigurationProperties {
     /**
      * Validates that the aws.accessKeyId and aws.secretKey provided are valid and active before starting the application.
      *
-     * This is accomplished by making sure we receive a success response from a call to STS's GetCallerIdentity API
+     * This is accomplished by making sure we receive a success response from a call to STS's GetCallerIdentity API.
+     * @see: https://www.vaultproject.io/docs/secrets/aws#usage
      */
     @PostConstruct
     private void checkCredentials() {

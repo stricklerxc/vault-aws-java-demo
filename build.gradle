@@ -20,9 +20,9 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-vault-config-aws:3.0+'
 
     // AWS
-    implementation platform('com.amazonaws:aws-java-sdk-bom:1.11+')
-    implementation 'com.amazonaws:aws-java-sdk-s3'
-    implementation 'com.amazonaws:aws-java-sdk-sts'
+    implementation platform('software.amazon.awssdk:bom:2.15.0')
+    implementation 'software.amazon.awssdk:s3'
+    implementation 'software.amazon.awssdk:sts'
 
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

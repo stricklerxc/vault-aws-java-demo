@@ -1,30 +1,24 @@
 package com.github.stricklerxc.awsvaultenginedemo.service;
 
-import java.util.List;
-
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.Bucket;
-
 import org.springframework.stereotype.Service;
+
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.Bucket;
+import software.amazon.awssdk.services.s3.model.ListBucketsResponse;
 
 @Service
 public class S3Service {
-    AmazonS3 s3;
+    S3Client s3;
 
     S3Service() {
-        s3 = AmazonS3ClientBuilder
-                .standard()
-                .withRegion(Regions.DEFAULT_REGION)
-                .build();
+        s3 = S3Client.builder().build();
     }
 
     public void printBuckets() {
-        List<Bucket> buckets = s3.listBuckets();
+        ListBucketsResponse buckets = s3.listBuckets();
 
-        for (Bucket bucket : buckets) {
-            System.out.println(bucket.getName());
+        for (Bucket bucket : buckets.buckets()) {
+            System.out.println(bucket.name());
         }
     }
 }

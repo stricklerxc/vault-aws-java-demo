@@ -4,12 +4,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.securitytoken.AWSSecurityTokenService;
-import com.amazonaws.services.securitytoken.AWSSecurityTokenServiceClientBuilder;
-import com.amazonaws.services.securitytoken.model.AWSSecurityTokenServiceException;
-import com.amazonaws.services.securitytoken.model.GetCallerIdentityRequest;
-import com.amazonaws.services.securitytoken.model.GetCallerIdentityResult;
 import com.github.stricklerxc.awsvaultenginedemo.AwsVaultEngineDemoApplication;
 
 import org.slf4j.Logger;
@@ -17,31 +11,46 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import software.amazon.awssdk.awscore.exception.AwsServiceException;
+import software.amazon.awssdk.core.exception.SdkClientException;
+import software.amazon.awssdk.services.sts.StsClient;
+import software.amazon.awssdk.services.sts.model.GetCallerIdentityResponse;
+
 @Configuration
 @ConfigurationProperties("aws")
 public class AwsConfigurationProperties {
     private static final Logger logger = LoggerFactory.getLogger(AwsVaultEngineDemoApplication.class);
 
-
     String accessKeyId;
-    String secretKey;
+    String secretAccessKey;
+
+    String sessionToken;
 
     public void setAccessKeyId(String accessKeyId) {
         this.accessKeyId = accessKeyId;
         System.setProperty("aws.accessKeyId", accessKeyId);
     }
 
-    public void setSecretKey(String secretKey) {
-        this.secretKey = secretKey;
-        System.setProperty("aws.secretKey", secretKey);
+    public void setSecretAccessKey(String secretAccessKey) {
+        this.secretAccessKey = secretAccessKey;
+        System.setProperty("aws.secretAccessKey", secretAccessKey);
+    }
+
+    public void setSessionToken(String sessionToken) {
+        this.sessionToken = sessionToken;
+        System.setProperty("aws.sessionToken", sessionToken);
     }
 
     public String getAccessKeyId() {
         return accessKeyId;
     }
 
-    public String getSecretKey() {
-        return secretKey;
+    public String getSecretAccessKey() {
+        return secretAccessKey;
+    }
+
+    public String getSessionToken() {
+        return sessionToken;
     }
 
     /**
@@ -52,22 +61,22 @@ public class AwsConfigurationProperties {
      */
     @PostConstruct
     private void checkCredentials() {
-        AWSSecurityTokenService stsClient = AWSSecurityTokenServiceClientBuilder
-                                                .standard()
-                                                .withRegion(Regions.DEFAULT_REGION)
-                                                .build();
+        StsClient stsClient = StsClient.builder().build();
 
         logger.info("Waiting for AWS credentials to become active");
 
-        long endTime = System.nanoTime() + TimeUnit.NANOSECONDS.convert(5L, TimeUnit.MINUTES);
+        long endTime = System.nanoTime() + TimeUnit.NANOSECONDS.convert(30L, TimeUnit.SECONDS);
         while (System.nanoTime() < endTime) {
             try {
-                GetCallerIdentityResult response = stsClient.getCallerIdentity(new GetCallerIdentityRequest());
+                GetCallerIdentityResponse response = stsClient.getCallerIdentity();
 
-                logger.info(String.format("AWS Credentials (%s) are active", response.getArn()));
+                logger.info(String.format("AWS Credentials (%s) are active", response.arn()));
                 break;
-            } catch (AWSSecurityTokenServiceException e) {
+            } catch (AwsServiceException e) {
                 logger.debug(e.getMessage());
+            } catch (SdkClientException e) {
+                logger.error(e.getMessage());
+                break;
             }
         }
 

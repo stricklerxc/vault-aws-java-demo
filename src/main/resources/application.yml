@@ -8,10 +8,12 @@ spring:
         application-name: aws-demo
       aws:
         enabled: true
-        role: s3
+        role: s3-role
         backend: aws
+        credential-type: assumed_role
         access-key-property: aws.accessKeyId
-        secret-key-property: aws.secretKey
+        secret-key-property: aws.secretAccessKey
+        session-token-key-property: aws.sessionToken
       authentication: TOKEN
       token: ${VAULT_TOKEN}
       uri: ${VAULT_ADDR}
